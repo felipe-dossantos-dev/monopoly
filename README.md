@@ -1,6 +1,6 @@
 # Monopoly
 
-Python OOP code challenge for 
+Monopoly Python OOP code challenge 
 
 ## Run
 
