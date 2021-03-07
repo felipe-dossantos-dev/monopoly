@@ -34,6 +34,7 @@ O jogador aleatório compra a propriedade que ele parar em cima com probabilidad
 ### Compra de propriedades
 Jogadores só podem comprar propriedades caso ela não tenha dono e o jogador tenha o dinheiro da venda
 Ao cair em uma propriedade sem proprietário, o jogador pode escolher entre comprar ou não a propriedade. Esse é a única forma pela qual uma propriedade pode ser comprada. Ao comprar uma propriedade, o jogador perde o dinheiro e ganha a posse da propriedade.
+Quando o jogador sai do jogo ele perde suas propriedades e portanto podem ser compradas por qualquer outro jogador. 
 
 
 ### Rodada
@@ -48,6 +49,7 @@ Tem uma posição fixa no tabuleiro.
 Tem um valor de aluguel,caso um proprietário caso já estejam compradas
 Ao cair em uma propriedade sem proprietário, o jogador pode escolher entre comprar ou não a propriedade. Esse é a única forma pela qual uma propriedade pode ser comprada. 
 Ao cair em uma propriedade que tem proprietário, ele deve pagar ao proprietário o valor do aluguel da propriedade. 
+Quando o jogador sai do jogo ele perde suas propriedades e portanto podem ser compradas por qualquer outro jogador. 
 
 
 ### Tabuleiro
