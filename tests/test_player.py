@@ -52,7 +52,7 @@ def test_random_strategy():
     assert type(should_buy) == bool
 
 
-def test_player():
+def test_player_balance():
     # arrange
     player = Player(RandomStrategy(), balance=500)
     # act
@@ -62,13 +62,55 @@ def test_player():
     assert not player.is_broken()
 
     # act
-    player.withdraw(300)
+    player.withdraw(600)
     # assert
-    assert player.balance == 300
+    assert player.balance == 0
     assert not player.is_broken()
 
     # act
-    player.withdraw(600)
+    player.withdraw(300)
     # assert
     assert player.balance == -300
     assert player.is_broken()
+
+    # act
+    player.reset()
+    # assert
+    assert player.balance == 500
+
+
+def test_player_buy():
+    # arrange
+    player_1 = Player(RandomStrategy())
+    estate = Estate(100, 10)
+
+    # act
+    player_1.buy(estate)
+
+    # assert
+    assert player_1.balance == 200
+    assert estate.owner == player_1
+
+
+def test_player_pay_rent():
+    # arrange
+    player_1 = Player(RandomStrategy())
+    player_2 = Player(RandomStrategy())
+
+    estate = Estate(100, 10)
+    estate.set_owner(player_2)
+
+    # act
+    player_1.pay_rent(estate)
+
+    # assert
+    assert player_1.balance == 290
+    assert player_2.balance == 310
+
+
+def test_player_should_buy():
+    # arrange
+    player = Player(ImpulsiveStrategy(), balance=500)
+    assert player.should_buy(estate=Estate(501, 60)) == False
+    assert player.should_buy(estate=Estate(500, 60)) == True
+    assert player.should_buy(estate=Estate(499, 60)) == True

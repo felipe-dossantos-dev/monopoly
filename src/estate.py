@@ -11,8 +11,11 @@ class Estate:
     def has_owner(self):
         return self.owner != None
 
-    def buy(self, player):
+    def set_owner(self, player):
         self.owner = player
+
+    def pay_rent(self):
+        self.owner.deposit(self.rent_value)
 
     def free(self):
         self.owner = None

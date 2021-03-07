@@ -35,7 +35,7 @@ class Board:
     def add_player(self, player):
         self.players_positions[player] = self.FIRST_POSITION
 
-    def move_player(self, player: Player, steps) -> Estate:
+    def move(self, player: Player, steps) -> Estate:
         position = self.players_positions[player]
         position += steps
         if position >= self.estate_quantity:
@@ -43,3 +43,16 @@ class Board:
             player.deposit(self.full_round_value)
         self.players_positions[player] = position
         return self.estates[position]
+
+    def free_estates_from(self, player):
+        for estate in self.get_estates_from(player):
+            estate.free()
+
+    def get_estates_from(self, player):
+        return [e for e in self.estates if e.owner == player]
+
+    def reset(self):
+        for e in self.estates:
+            e.free()
+        for k, v in self.players_positions.items():
+            self.players_positions[k] = self.FIRST_POSITION

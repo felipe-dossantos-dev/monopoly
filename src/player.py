@@ -31,6 +31,7 @@ class RandomStrategy:
 
 class Player:
     def __init__(self, strategy, balance=300) -> None:
+        self.initial_balance = balance
         self.balance = balance
         self.strategy = strategy
         self.id = uuid.uuid4()
@@ -39,7 +40,7 @@ class Player:
         return random.choice([1, 2, 3, 4, 5, 6])
 
     def should_buy(self, estate: Estate):
-        return self.balance > estate.buy_cost and self.strategy.should_buy(
+        return self.balance >= estate.buy_cost and self.strategy.should_buy(
             self.balance, estate
         )
 
@@ -49,8 +50,19 @@ class Player:
     def deposit(self, value):
         self.balance += value
 
+    def buy(self, estate: Estate):
+        self.withdraw(estate.buy_cost)
+        estate.set_owner(self)
+
+    def pay_rent(self, estate: Estate):
+        self.withdraw(estate.rent_value)
+        estate.pay_rent()
+
     def is_broken(self):
-        return self.balance <= 0
+        return self.balance < 0
+
+    def reset(self):
+        self.balance = self.initial_balance
 
     def __hash__(self):
         return self.id.__hash__()
