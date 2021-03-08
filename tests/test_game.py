@@ -66,43 +66,41 @@ def test_remove_player():
 
 def test_play_round_pay_rent():
     # arrange
-    player_1 = Player(RandomStrategy())
-    player_1.play_dice = MagicMock(return_value=1)
+    player_do_nothing = Player(RandomStrategy(), balance=10000)
+    player_do_nothing.play_dice = MagicMock(return_value=2)
 
-    player_2 = Player(RandomStrategy())
-    player_1.play_dice = MagicMock(return_value=1)
+    player_pay_rent = Player(RandomStrategy(), balance=10000)
+    player_pay_rent.play_dice = MagicMock(return_value=1)
 
-    game = Game(players=[player_1, player_2])
-    game.active_players = [player_1, player_2]
+    player_buy = Player(ImpulsiveStrategy(), balance=10000)
+    player_buy.play_dice = MagicMock(return_value=4)
 
-    game.board.estates[0].set_owner(player_1)
-    game.board.estates[1].set_owner(player_1)
-    game.board.estates[2].set_owner(player_2)
+    player_broken = Player(RandomStrategy(), balance=0)
+    player_broken.play_dice = MagicMock(return_value=1)
 
-    game.board.players_positions[player_1] = 2
-    game.board.players_positions[player_2] = 3
+    game = Game(players=[player_pay_rent, player_buy])
+    game.active_players = [
+        player_pay_rent,
+        player_buy,
+        player_broken,
+        player_do_nothing,
+    ]
+
+    game.board.estates[0].set_owner(player_do_nothing)
+    game.board.estates[1].set_owner(player_do_nothing)
+    game.board.estates[2].set_owner(player_do_nothing)
+
+    game.board.players_positions[player_do_nothing] = 0
+    game.board.players_positions[player_pay_rent] = 0
+    game.board.players_positions[player_buy] = 0
+    game.board.players_positions[player_broken] = 0
 
     # act
     game.play_round()
 
     # assert
-
-
-def test_play_round_buy():
-    pass
-
-
-def test_play_round_is_broken():
-    pass
-
-
-def play_round(self):
-    for player in self.active_players:
-        dice_value = player.play_dice()
-        estate = self.board.move(player, dice_value)
-        if estate.has_owner():
-            player.pay_rent(estate)
-        elif player.should_buy(estate):
-            player.buy(estate)
-        if player.is_broken():
-            self.remove_player(player)
+    assert player_do_nothing.balance > 10000
+    assert player_pay_rent.balance < 10000
+    assert player_buy.balance < 10000
+    assert game.board.estates[4].owner == player_buy
+    assert player_broken.is_broken()

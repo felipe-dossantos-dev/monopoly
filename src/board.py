@@ -12,19 +12,23 @@ class Board:
         estates=None,
         estate_quantity=20,
         full_round_value=100,
-        estate_buy_cost_factor=500,
-        estate_rent_value_factor=100,
+        estate_buy_cost_min=100,
+        estate_buy_cost_max=1000,
+        estate_rent_value_min=5,
+        estate_rent_value_max=100,
     ) -> None:
         self.estate_quantity = estate_quantity
-        self.estates = estates
         if not estates:
             self.estates = [
                 Estate(
-                    random.random() * estate_buy_cost_factor,
-                    random.random() * estate_rent_value_factor,
+                    random.randrange(estate_buy_cost_min, estate_buy_cost_max, 1),
+                    random.randrange(estate_rent_value_min, estate_rent_value_max, 1),
                 )
                 for _ in range(estate_quantity)
             ]
+        else:
+            self.estates = estates
+            self.estate_quantity = len(estates)
         self.players_positions = {}
         self.full_round_value = full_round_value
 

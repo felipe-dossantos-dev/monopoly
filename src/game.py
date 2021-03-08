@@ -1,5 +1,6 @@
 from src.player import *
 from src.board import *
+import json
 
 
 class GameResult:
@@ -7,6 +8,9 @@ class GameResult:
         self.timeout_finish = timeout_finish
         self.turns_played = turns_played
         self.winner_strategy = winner_strategy
+
+    def __repr__(self) -> str:
+        return json.dumps(self.__dict__, indent=2)
 
 
 class Game:
@@ -38,7 +42,7 @@ class Game:
             self.play_round()
 
         if not self.winner:
-            self.active_players.sort(lambda x: x.balance, reverse=True)
+            self.active_players.sort(key=lambda x: x.balance, reverse=True)
             self.set_finish(self.max_rounds)
             timeout_finish = True
 
