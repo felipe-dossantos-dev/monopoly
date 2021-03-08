@@ -17,15 +17,20 @@ source .venv/bin/activate
 install dependencies
 ``` bash
 pip install -r requirements.txt
+pip install -e .
 ```
 
 run tests
 ``` bash
-pip install -e .
 pytest
 ```
 
-run simulation
+run basic simulation
+``` bash
+monopoly
 ```
-TODO
+
+to more options on simulation
+``` bash
+monopoly --help
 ```

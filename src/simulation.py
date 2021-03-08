@@ -9,21 +9,15 @@ class SimulationResult:
     def __init__(self, game_results) -> None:
         self.total_games = len(game_results)
         self.strategy_counter = Counter([r.winner_strategy for r in game_results])
+        self.winner_strategy = max(self.strategy_counter, key=self.strategy_counter.get)
         self.timeout_counter = Counter([r.timeout_finish for r in game_results])
         self.strategy_percentage = dict(
-            [(k, v / self.total_games) for k, v in self.strategy_counter.items()]
-        )
-        self.strategy_percentage = dict(
-            [(k, v / self.total_games) for k, v in self.strategy_counter.items()]
+            [(k, v / self.total_games * 100) for k, v in self.strategy_counter.items()]
         )
         self.mean_turns = mean([r.turns_played for r in game_results])
         self.timeout_per_thousands = (
             self.timeout_counter[True] / self.total_games * 1000
         )
-
-    def percentage(self):
-
-        pass
 
     def __repr__(self) -> str:
         return json.dumps(self.__dict__, indent=2)
